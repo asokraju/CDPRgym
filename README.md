@@ -31,7 +31,7 @@ CDPR-v0:
   ```
 Also add the following to utils/import_envs.py
 ```
-register(id="CDPR-v0", entry_point="from CDPRGYM.envs.cdpr import CDPRenv")
+register(id="CDPR-v0", entry_point="CDPRgym.envs.cdpr:CDPRenv")
 
 ```
 
