@@ -40,3 +40,5 @@ try running
 ```
 python train.py --algo ppo --env "CDPR-v0" --vec-env "subproc"
 ```
+
+CHeckout CDPR_RLzoo.ipynb to see more on this.
