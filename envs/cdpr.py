@@ -8,10 +8,10 @@ from numpy.core.memmap import dtype
 
 import gym
 from gym import logger, spaces
-from gym.envs.classic_control import utils
-from gym.error import DependencyNotInstalled
-from gym.utils.renderer import Renderer
-from typing import Optional, Union
+# from gym.envs.classic_control import utils
+# from gym.error import DependencyNotInstalled
+# from gym.utils.renderer import Renderer
+# from typing import Optional, Union
 
 #base model
 class PRPRmodel():
@@ -296,6 +296,7 @@ class CDPRenv(PRPRmodel,gym.Env):
     self.steps = 0
     self.done = False
     return self.state
+
   
   def action_scaling(self, action):
     a_v, b_v = self.T_min, self.T_max
@@ -306,7 +307,7 @@ class CDPRenv(PRPRmodel,gym.Env):
     w = a_w + 0.5*(w_s+1.)*(b_w-a_w)
     return v, w #np.array([v, w], dtype=np.float32).reshape(1,8)
 
-  def reward(self, state = None, action = None):
+  def reward(self):
 
     R0 = np.linalg.norm(self.position_error)
     R1 = 0.
