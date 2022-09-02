@@ -295,7 +295,7 @@ class CDPRenv(PRPRmodel,gym.Env):
     self.state = np.concatenate((self.X_des[:,0],np.array([0.,0.,0.,0.,0.,0.1,0.1,0.1,0.1,0.,0.,0.,0.])),axis=0).T # Observable state info
     self.steps = 0
     self.done = False
-
+    return self.state
   
   def action_scaling(self, action):
     a_v, b_v = self.T_min, self.T_max
