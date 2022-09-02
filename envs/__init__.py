@@ -1,1 +1,1 @@
-from CDPRGYM.envs.cdpr import CDPRenv
+from CDPRgym.envs.cdpr import CDPRenv
