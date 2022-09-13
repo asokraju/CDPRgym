@@ -232,7 +232,8 @@ class CDPRenv(PRPRmodel,gym.Env):
          np.finfo(np.float32).max, #y_e^t
          np.finfo(np.float32).max, #\dot x_e^t
          np.finfo(np.float32).max, #\dot y_e^t
-         2., # kappa+mom
+         1., # kappa+mom
+         1.,
          1., # tensions
          1., # tensions
          1., # tensions
@@ -253,7 +254,8 @@ class CDPRenv(PRPRmodel,gym.Env):
          -np.finfo(np.float32).max, #y_e^t
          -np.finfo(np.float32).max, #\dot x_e^t
          -np.finfo(np.float32).max, #\dot y_e^t
-         0., # kappa+mon
+         0., # kappa
+         0., #mom
          0.1, # tensions
          0.1, # tensions
          0.1, # tensions
@@ -292,7 +294,7 @@ class CDPRenv(PRPRmodel,gym.Env):
     self.X_des = np.vstack((B,phi,B_dot,phi_dot)) #6 by 100 
 
     # state reset
-    self.state = np.concatenate((self.X_des[:,0],np.array([0.,0.,0.,0.,0.,0.1,0.1,0.1,0.1,0.,0.,0.,0.])),axis=0).T # Observable state info
+    self.state = np.concatenate((self.X_des[:,0],np.array([0.,0.,0.,0.,0.,0.,0.1,0.1,0.1,0.1,0.,0.,0.,0.])),axis=0).T # Observable state info
     self.steps = 0
     self.done = False
     return self.state
@@ -308,7 +310,6 @@ class CDPRenv(PRPRmodel,gym.Env):
     return v, w #np.array([v, w], dtype=np.float32).reshape(1,8)
 
   def reward(self):
-
     R0 = np.linalg.norm(self.position_error)
     R1 = 0.
     R2 = 0.
@@ -316,7 +317,7 @@ class CDPRenv(PRPRmodel,gym.Env):
     R4 = np.matmul((np.array([0.1,0.1,0.1,0.1]) - self.T0).T, (np.array([0.1,0.1,0.1,0.1]) - self.T0))
     R5 = (1 - min(self.kappa[0],self.mom[0]))
 
-    weights = np.array([1e4,0.,0.,1e3,1e1,1e1]).reshape(1,6)
+    weights = np.array([1e6,0.,0.,1e4,1e1,1e2]).reshape(1,6)
     reward = np.array([R0,R1,R2,R3,R4,R5]).reshape(1,6)
 
     total_reward = np.matmul(weights,reward.T)
@@ -346,7 +347,7 @@ class CDPRenv(PRPRmodel,gym.Env):
     self.position_error = X_dyn[0:2] - self.X_des[0:2,self.steps]
     self.velocity_error = X_dyn[3:5] - self.X_des[3:5,self.steps]
 
-    self.state = np.concatenate((X_dyn,self.position_error,self.velocity_error,self.mom+self.kappa,T1,l1))
+    self.state = np.concatenate((X_dyn,self.position_error,self.velocity_error,self.mom,self.kappa,T1,l1))
 
     
 
